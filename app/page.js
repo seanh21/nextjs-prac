@@ -1,9 +1,23 @@
 'use client'
 
-import getUsers from './data';
+import { useEffect, useState } from "react";
 
 export default async function Home() {
-    const jdata = await fetch('http://localhost:3000/api/user');
+    const [page, setPages] = useState();
+
+    useEffect(() => {
+		setPages(1);
+	}, [])
+
+    function handlePrev() {
+        setPages(page - 1);
+      }
+
+    function handleNext() {
+        setPages(page + 1);
+    }
+
+    const jdata = await fetch(`http://localhost:3000/api/user?page=1`);
     const data = await jdata.json();
 
   return (
@@ -15,6 +29,8 @@ export default async function Home() {
                   </div>
               </div>
           })}
+      <button onClick={handlePrev}>Previous</button>
+      <button onClick={handleNext}>Next</button>
       </div>
   )
 }
